@@ -27,19 +27,35 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  
   overscroll-behavior: none;
 }
 
 #board {
   height: 88vw;
   width: 88vw;
-
   max-width: 500px;
   max-height: 500px;
-
   border: 1px solid white;
   position: relative;
+  background-image: url('background.jpg');
+  background-size: 50%;
+}
+
+#board::before,
+#board::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 10px;
+  background-color: brown;
+}
+
+#board::before {
+  top: -10px;
+}
+
+#board::after {
+  bottom: -10px;
 }
 
 #timer, #score, #highScore {
@@ -55,15 +71,29 @@ body {
 }
 
 .snakeSquare {
-  background-color: green;
+  background-color: #29a329;
   z-index: 2;
+  box-shadow: 0 0 5px 2px #007f00;
 }
 
 #snake-head {
-  background-color: darkgreen;
+  background-color: #007f00;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 #apple {
   background-color: red;
-  z-index: 10;
+  box-shadow: 0 0 5px 3px black;
+  animation: pop 0.5s infinite;
 }
