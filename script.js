@@ -99,6 +99,7 @@ function init() {
   snake.body = [];
   snake.head = makeSnakeSquare(10, 10);
   snake.head.setAttribute('id', 'snake-head');
+  snake.head.direction = 'right'; // Initial direction
   apple = makeApple();
   scoreElement.innerHTML = "Score: 0";
   score = 0;
@@ -126,7 +127,11 @@ function moveSnake() {
     repositionSquare(snakeSquare, nextSnakeSquare.row, nextSnakeSquare.column);
   }
 
-  snake.head.direction = snake.head.nextDirection;
+  if (snake.head.nextDirection) {
+    snake.head.direction = snake.head.nextDirection;
+    snake.head.nextDirection = null; // Clear next direction after setting
+  }
+
   if (snake.head.direction === "left") {
     snake.head.column--;
   } else if (snake.head.direction === "right") {
@@ -162,7 +167,7 @@ function handleAppleCollision() {
   }
   makeSnakeSquare(row, column);
 
-  if (score === 4) {
+  if (score % 4 === 0) {
     speedUp();
   }
 }
@@ -173,10 +178,11 @@ function hasCollidedWithSnake() {
       return true;
     }
   }
+  return false;
 }
 
 function hasHitWall() {
-  return snake.head.row > ROWS || snake.head.row < 1 || snake.head.column > COLUMNS || snake.head.column < 1;
+  return snake.head.row < 1 || snake.head.row > ROWS || snake.head.column < 1 || snake.head.column > COLUMNS;
 }
 
 function endGame() {
